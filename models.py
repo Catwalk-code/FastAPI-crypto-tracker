@@ -13,7 +13,7 @@ class Holding(BaseModel):
     coin: str
     amount: float
     buy_price: float
-    currnet_price: float | None = None
+    current_price: float | None = None
     profit_loss: float | None = None
 
 
