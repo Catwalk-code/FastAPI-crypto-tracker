@@ -40,22 +40,25 @@ async def create_holding_endpoint(holding: HoldingCreate):
 async def get_holdings_endpoint():
     holdings = await get_holdings()
 
-    for h in holdings:
-        current_price = await get_current_price(h["coin"])
+    if not holldings:
+        return[]
 
-        #If None, than coin is not found
-        if current_price is None:
-            h["currnet_price"] = 0.0 #set 0 so as not to fall
-            h["profit_loss"] = 0.0
-            continue #Skip this coin add go to the next
+    tasks = [get_current_price(h["coin"]) for h in holdings]
 
-        h["currnet_price"] = current_price
-        invested = h["amount"] * h["buy_price"]
-        current_value= h["amount"] * current_price
-        h["profit_loss"] = current_value - invested
+    prices = await asyncio.gather(*tasks)
+
+    for h, current_price in zip(holidngs, prices):
+        if current_price is not None:
+            h["current_price"] = current_price
+            invested = h["amount"] * h["buy_price"]
+            current_value = h["amount"] *current_price
+            h["profit_loss"] = current_value - invested
+        else:
+            h["current_price"] = 0.0
+            h["profit_loss"] - 0.0
 
     return holdings
-
+        
 
 @app.get("/holdings/{holding_id}", response_model=Holding)
 async def get_holding_by_id_endpoint(holding_id: int):
