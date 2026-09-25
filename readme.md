@@ -39,9 +39,8 @@ A simple FastAPI application for tracking cryptocurrency holdings and monitoring
 ```bash
 pip install fastapi uvicorn httpx asyncpg python-dotenv
 
-## ⚙️ Installation & Running
 
-### 1. Clone the repository
+# Clone the repository
 ```bash
 git clone https://github.com/your-username/fastapi-crypto-tracker.git
 cd fastapi-crypto-tracker
